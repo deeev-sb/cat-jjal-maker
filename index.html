@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>고양이 가라사대</title>
+    <title>리액트 실습</title>
 </head>
 <style>
     body {
@@ -43,12 +43,21 @@
 <script type="text/babel">
     const catItem = (
         <li>
-            <img src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"/>
+            <img src="https://cataas.com/cat/60b73094e04e18001194a309/says/react" alt={"고양이 이미지"}/>
         </li>
     );
 
+    const favorites = (
+        <ul className="favorites">
+            {catItem}
+            {catItem}
+            {catItem}
+        </ul>
+    );
+
     const draw = document.querySelector("#app");
-    ReactDOM.render(catItem, draw);
+    // ReactDOM.render(catItem, draw);
+    ReactDOM.render(favorites, draw);
 </script>
 </body>
 </html>
