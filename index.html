@@ -55,9 +55,28 @@
         </ul>
     );
 
+    const mainCard = (
+        <div className="main-card">
+            <img
+                src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
+                alt="고양이"
+                width="400"
+            />
+            <button>🤍</button>
+        </div>
+    );
+
+    const app = (
+        <div>
+            {mainCard}
+            {favorites}
+        </div>
+    );
+
     const draw = document.querySelector("#app");
     // ReactDOM.render(catItem, draw);
-    ReactDOM.render(favorites, draw);
+    // ReactDOM.render(favorites, draw);
+    ReactDOM.render(app, draw);
 </script>
 </body>
 </html>
