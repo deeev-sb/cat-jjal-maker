@@ -41,6 +41,28 @@
 
 <!-- 리액트로 구현한 이미지 사진 넣기 -->
 <script type="text/babel">
+    const title = <h1>1번 고양이</h1>;
+
+    const inputText = (
+        <form>
+            <label>
+                <input type="text" name="name" placeholder="영어 대사를 입력해주세요"/>
+            </label>
+            <button type="submit">생성</button>
+        </form>
+    );
+
+    const mainCard = (
+        <div className="main-card">
+            <img
+                src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
+                alt="고양이"
+                width="400"
+            />
+            <button>🤍</button>
+        </div>
+    );
+
     const catItem = (
         <li>
             <img src="https://cataas.com/cat/60b73094e04e18001194a309/says/react" alt={"고양이 이미지"}/>
@@ -55,19 +77,11 @@
         </ul>
     );
 
-    const mainCard = (
-        <div className="main-card">
-            <img
-                src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
-                alt="고양이"
-                width="400"
-            />
-            <button>🤍</button>
-        </div>
-    );
 
     const app = (
         <div>
+            {title}
+            {inputText}
             {mainCard}
             {favorites}
         </div>
@@ -76,7 +90,7 @@
     const draw = document.querySelector("#app");
     // ReactDOM.render(catItem, draw);
     // ReactDOM.render(favorites, draw);
-    ReactDOM.render(app, draw);
+    ReactDOM.render(app, draw);가
 </script>
 </body>
 </html>
