@@ -63,17 +63,18 @@
         </div>
     );
 
-    const catItem = (
-        <li>
-            <img src="https://cataas.com/cat/60b73094e04e18001194a309/says/react" alt={"고양이 이미지"}/>
-        </li>
-    );
+    function CatItem(props) { // 인자는 Object로 들어옴
+        return (
+            <li>
+                <img src={props.img} alt={"고양이 이미지"}/>
+            </li>
+        );
+    }
 
     const favorites = (
         <ul className="favorites">
-            {catItem}
-            {catItem}
-            {catItem}
+            <CatItem img={"https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn"}/>
+            <CatItem img={"https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript"}/>
         </ul>
     );
 
@@ -88,9 +89,7 @@
     );
 
     const draw = document.querySelector("#app");
-    // ReactDOM.render(catItem, draw);
-    // ReactDOM.render(favorites, draw);
-    ReactDOM.render(app, draw);가
+    ReactDOM.render(app, draw);
 </script>
 </body>
 </html>
