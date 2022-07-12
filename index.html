@@ -41,27 +41,34 @@
 
 <!-- 리액트로 구현한 이미지 사진 넣기 -->
 <script type="text/babel">
-    const title = <h1>1번 고양이</h1>;
+    const Title = (props) => {
+        return (
+            <h1>{props.children}</h1>
+        );
+    }
 
-    const inputText = (
+    // 아래와 같이 return 없이 괄호를 사용해서 써도, return 과 동일한 동작 수행
+    const InputText = () => (
         <form>
             <label>
                 <input type="text" name="name" placeholder="영어 대사를 입력해주세요"/>
             </label>
             <button type="submit">생성</button>
         </form>
-    );
+    )
 
-    const mainCard = (
-        <div className="main-card">
-            <img
-                src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
-                alt="고양이"
-                width="400"
-            />
-            <button>🤍</button>
-        </div>
-    );
+    const MainCard = ({img}) => {
+        return (
+            <div className="main-card">
+                <img
+                    src={img}
+                    alt="고양이"
+                    width="400"
+                />
+                <button>🤍</button>
+            </div>
+        );
+    }
 
     function CatItem(props) { // 인자는 Object로 들어옴
         return (
@@ -71,20 +78,22 @@
         );
     }
 
-    const favorites = (
-        <ul className="favorites">
-            <CatItem img={"https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn"}/>
-            <CatItem img={"https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript"}/>
-        </ul>
-    );
+    function Favorites() {
+        return (
+            <ul className="favorites">
+                <CatItem img={"https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn"}/>
+                <CatItem img={"https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript"}/>
+            </ul>
+        );
+    }
 
 
     const app = (
         <div>
-            {title}
-            {inputText}
-            {mainCard}
-            {favorites}
+            <Title>고양이</Title>
+            <InputText/>
+            <MainCard img={"https://cataas.com/cat/60b73094e04e18001194a309/says/react"}/>
+            <Favorites/>
         </div>
     );
 
