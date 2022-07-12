@@ -43,12 +43,7 @@
         );
     }
 
-    const Form = () => {
-        function handleFormSubmit(event) {
-            event.preventDefault(); // 리프레시를 막기 위한 용도 (JS 문법)
-            console.log("폼 전송");
-        }
-
+    const Form = ({handleFormSubmit}) => {
         return (
             <form onSubmit={handleFormSubmit}>
                 <label>
@@ -64,9 +59,10 @@
             console.log("하트 눌렀음");
         }
 
-        function  handleHeartMouseOver() {
+        function handleHeartMouseOver() {
             console.log("하트 스쳐 지나감");
         }
+
         return (
             <div className="main-card">
                 <img
@@ -82,7 +78,7 @@
     function CatItem(props) { // 인자는 Object로 들어옴
         return (
             <li>
-                <img src={props.img} alt={"고양이 이미지"} style={{ width: "150px"}}/>
+                <img src={props.img} alt={"고양이 이미지"} style={{width: "150px"}}/>
             </li>
         );
     }
@@ -96,18 +92,34 @@
         );
     }
 
+    const App = () => {
+        const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
+        const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
 
-    const app = (
-        <div>
-            <Title>고양이</Title>
-            <Form/>
-            <MainCard img={"https://cataas.com/cat/60b73094e04e18001194a309/says/react"}/>
-            <Favorites/>
-        </div>
-    );
+        const [counter, setCounter] = React.useState(1); // 초기 값 1로 설정
+        const [mainCat, setMainCat] = React.useState(CAT1);
+
+
+        function handleFormSubmit(event) {
+            event.preventDefault(); // 리프레시를 막기 위한 용도 (JS 문법)
+            console.log("폼 전송");
+            setCounter(counter + 1);
+            setMainCat(CAT2);
+        }
+
+        return (
+            <div>
+                <Title>{counter}번째 고양이</Title>
+                <Form handleFormSubmit={handleFormSubmit}/>
+                <MainCard img={mainCat}/>
+                <Favorites/>
+            </div>
+        );
+    }
+
 
     const draw = document.querySelector("#app");
-    ReactDOM.render(app, draw);
+    ReactDOM.render(<App/>, draw);
 </script>
 </body>
 </html>
