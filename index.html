@@ -24,10 +24,6 @@
         flex-wrap: wrap;
         gap: 15px;
     }
-
-    .favorites img {
-        width: 150px;
-    }
 </style>
 <body>
 <!-- 이미지를 넣어줄 위치 -->
@@ -47,17 +43,30 @@
         );
     }
 
-    // 아래와 같이 return 없이 괄호를 사용해서 써도, return 과 동일한 동작 수행
-    const InputText = () => (
-        <form>
-            <label>
-                <input type="text" name="name" placeholder="영어 대사를 입력해주세요"/>
-            </label>
-            <button type="submit">생성</button>
-        </form>
-    )
+    const Form = () => {
+        function handleFormSubmit(event) {
+            event.preventDefault(); // 리프레시를 막기 위한 용도 (JS 문법)
+            console.log("폼 전송");
+        }
+
+        return (
+            <form onSubmit={handleFormSubmit}>
+                <label>
+                    <input type="text" name="name" placeholder="영어 대사를 입력해주세요"/>
+                </label>
+                <button type="submit">생성</button>
+            </form>
+        );
+    }
 
     const MainCard = ({img}) => {
+        function handleHeartClick() {
+            console.log("하트 눌렀음");
+        }
+
+        function  handleHeartMouseOver() {
+            console.log("하트 스쳐 지나감");
+        }
         return (
             <div className="main-card">
                 <img
@@ -65,7 +74,7 @@
                     alt="고양이"
                     width="400"
                 />
-                <button>🤍</button>
+                <button onClick={handleHeartClick} onMouseOver={handleHeartMouseOver}>🤍</button>
             </div>
         );
     }
@@ -73,7 +82,7 @@
     function CatItem(props) { // 인자는 Object로 들어옴
         return (
             <li>
-                <img src={props.img} alt={"고양이 이미지"}/>
+                <img src={props.img} alt={"고양이 이미지"} style={{ width: "150px"}}/>
             </li>
         );
     }
@@ -91,7 +100,7 @@
     const app = (
         <div>
             <Title>고양이</Title>
-            <InputText/>
+            <Form/>
             <MainCard img={"https://cataas.com/cat/60b73094e04e18001194a309/says/react"}/>
             <Favorites/>
         </div>
