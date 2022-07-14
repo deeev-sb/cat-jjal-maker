@@ -54,15 +54,7 @@
         );
     }
 
-    const MainCard = ({img}) => {
-        function handleHeartClick() {
-            console.log("하트 눌렀음");
-        }
-
-        function handleHeartMouseOver() {
-            console.log("하트 스쳐 지나감");
-        }
-
+    const MainCard = ({img, handleHeartClick}) => {
         return (
             <div className="main-card">
                 <img
@@ -70,7 +62,7 @@
                     alt="고양이"
                     width="400"
                 />
-                <button onClick={handleHeartClick} onMouseOver={handleHeartMouseOver}>🤍</button>
+                <button onClick={handleHeartClick}>🤍</button>
             </div>
         );
     }
@@ -83,11 +75,12 @@
         );
     }
 
-    function Favorites() {
+    function Favorites({favorites}) {
         return (
+            // map을 사용하면 배열을 순회하면서 배열의 수 만큼 생성됨
+            // 리스트의 모든 child는 유니크한 "key" prop이 있어야 함.
             <ul className="favorites">
-                <CatItem img={"https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn"}/>
-                <CatItem img={"https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript"}/>
+                {favorites.map((cat) => (<CatItem img={cat} key={cat}/>))}
             </ul>
         );
     }
@@ -95,10 +88,11 @@
     const App = () => {
         const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
         const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
+        const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
 
         const [counter, setCounter] = React.useState(1); // 초기 값 1로 설정
         const [mainCat, setMainCat] = React.useState(CAT1);
-
+        const [favorites, setFavorites] = React.useState([CAT1, CAT2]); // 좋아요 목록
 
         function handleFormSubmit(event) {
             event.preventDefault(); // 리프레시를 막기 위한 용도 (JS 문법)
@@ -107,12 +101,17 @@
             setMainCat(CAT2);
         }
 
+        function handleHeartClick() {
+            console.log("하트 눌렀음");
+            setFavorites([...favorites, CAT3]); // CAT3가 favorites 내에 추가됨 (ES6 + Spread Operator 문법)
+        }
+
         return (
             <div>
                 <Title>{counter}번째 고양이</Title>
                 <Form handleFormSubmit={handleFormSubmit}/>
-                <MainCard img={mainCat}/>
-                <Favorites/>
+                <MainCard img={mainCat} handleHeartClick={handleHeartClick}/>
+                <Favorites favorites={favorites}/>
             </div>
         );
     }
