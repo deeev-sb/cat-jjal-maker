@@ -43,18 +43,47 @@
         );
     }
 
-    const Form = ({handleFormSubmit}) => {
+    const Form = ({updateMainCat}) => {
+        const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text); // 한글에 대한 정보를 가지고 있음
+        const [value, setValue] = React.useState(""); // 입력한 값 표시용
+        const [errorMessage, setErrorMessage] = React.useState(""); // 에러 메시지 전달용
+
+        function handleInputChange(e) {
+            const userValue = e.target.value.toUpperCase();
+            setErrorMessage("");
+            if (includesHangul(userValue)) {
+                setErrorMessage("한글은 입력할 수 없습니다.");
+            }
+            setValue(userValue); // 대문자로 변경
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault(); // 리프레시를 막기 위한 용도 (JS 문법)
+            setErrorMessage("");
+            if (value === "") {
+                setErrorMessage("빈 값으로 만들 수 없습니다.");
+                return;
+            }
+            updateMainCat();
+        }
+
         return (
             <form onSubmit={handleFormSubmit}>
                 <label>
-                    <input type="text" name="name" placeholder="영어 대사를 입력해주세요"/>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="영어 대사를 입력해주세요"
+                        value={value} // input form 에 입력한 값을 보여줌
+                        onChange={handleInputChange}/>
                 </label>
                 <button type="submit">생성</button>
+                <p style={{color : 'red'}}>{errorMessage}</p>
             </form>
         );
     }
 
-    const MainCard = ({img, handleHeartClick}) => {
+    const MainCard = ({img, onHeartClick}) => {
         return (
             <div className="main-card">
                 <img
@@ -62,7 +91,7 @@
                     alt="고양이"
                     width="400"
                 />
-                <button onClick={handleHeartClick}>🤍</button>
+                <button onClick={onHeartClick}>🤍</button>
             </div>
         );
     }
@@ -94,23 +123,20 @@
         const [mainCat, setMainCat] = React.useState(CAT1);
         const [favorites, setFavorites] = React.useState([CAT1, CAT2]); // 좋아요 목록
 
-        function handleFormSubmit(event) {
-            event.preventDefault(); // 리프레시를 막기 위한 용도 (JS 문법)
-            console.log("폼 전송");
-            setCounter(counter + 1);
+        function updateMainCat() {
             setMainCat(CAT2);
+            setCounter(counter + 1);
         }
 
-        function handleHeartClick() {
-            console.log("하트 눌렀음");
+        function onHeartClick() {
             setFavorites([...favorites, CAT3]); // CAT3가 favorites 내에 추가됨 (ES6 + Spread Operator 문법)
         }
 
         return (
             <div>
                 <Title>{counter}번째 고양이</Title>
-                <Form handleFormSubmit={handleFormSubmit}/>
-                <MainCard img={mainCat} handleHeartClick={handleHeartClick}/>
+                <Form updateMainCat={updateMainCat}/>
+                <MainCard img={mainCat} onHeartClick={onHeartClick}/>
                 <Favorites favorites={favorites}/>
             </div>
         );
