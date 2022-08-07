@@ -37,6 +37,15 @@
 
 <!-- 리액트로 구현한 이미지 사진 넣기 -->
 <script type="text/babel">
+    const jsonLocalStorage = {
+        setItem: (key, value) => {
+            localStorage.setItem(key, JSON.stringify(value));
+        },
+        getItem: (key) => {
+            return JSON.parse(localStorage.getItem(key));
+        },
+    };
+
     const Title = (props) => {
         return (
             <h1>{props.children}</h1>
@@ -119,17 +128,21 @@
         const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
         const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
 
-        const [counter, setCounter] = React.useState(1); // 초기 값 1로 설정
+        const [counter, setCounter] = React.useState(jsonLocalStorage.getItem('counter') || 0); // localStorage 는 String 값을 반환함
         const [mainCat, setMainCat] = React.useState(CAT1);
-        const [favorites, setFavorites] = React.useState([CAT1, CAT2]); // 좋아요 목록
+        const [favorites, setFavorites] = React.useState(jsonLocalStorage.getItem('favorites') || []); // 좋아요 목록, null 값이면 빈 배열 반환
 
         function updateMainCat() {
             setMainCat(CAT2);
-            setCounter(counter + 1);
+            const nextCounter = counter + 1;
+            setCounter(nextCounter);
+            jsonLocalStorage.setItem('counter', nextCounter);
         }
 
         function onHeartClick() {
-            setFavorites([...favorites, CAT3]); // CAT3가 favorites 내에 추가됨 (ES6 + Spread Operator 문법)
+            const nextFavorites = [...favorites, mainCat]; // mainCat이 favorites 내에 추가됨 (ES6 + Spread Operator 문법)
+            setFavorites(nextFavorites);
+            jsonLocalStorage.setItem('favorites', nextFavorites);
         }
 
         return (
