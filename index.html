@@ -99,7 +99,9 @@
     );
   }
 
-  const MainCard = ({img, onHeartClick}) => {
+  const MainCard = ({img, onHeartClick, alreadyFavorite}) => {
+    const heartIcon = alreadyFavorite ? "💖" : "🤍";
+
     return (
       <div className="main-card">
         <img
@@ -107,7 +109,7 @@
           alt="고양이"
           width="400"
         />
-        <button onClick={onHeartClick}>🤍</button>
+        <button onClick={onHeartClick}>{heartIcon}</button>
       </div>
     );
   }
@@ -121,6 +123,10 @@
   }
 
   function Favorites({favorites}) {
+    if (favorites.length === 0) {
+      return <div>사진 위 하트를 눌러 고양이 사진을 저장해봐요!</div>
+    }
+
     return (
       // map을 사용하면 배열을 순회하면서 배열의 수 만큼 생성됨
       // 리스트의 모든 child는 유니크한 "key" prop이 있어야 함.
@@ -134,6 +140,9 @@
     const [counter, setCounter] = React.useState(jsonLocalStorage.getItem('counter') || 0); // localStorage 는 String 값을 반환함
     const [mainCat, setMainCat] = React.useState();
     const [favorites, setFavorites] = React.useState(jsonLocalStorage.getItem('favorites') || []); // 좋아요 목록, null 값이면 빈 배열 반환
+
+    // 좋아요 목록에 포함되어 있는지 반환됨
+    const alreadyFavorite = favorites.includes(mainCat);
 
     // 브라우저 접속 시 표시될 이미지
     async function setInitialCat() {
@@ -160,11 +169,13 @@
       jsonLocalStorage.setItem('favorites', nextFavorites);
     }
 
+    const title = counter ? <div>{counter}번째 고양이</div> : <div>고양이 짤방 실습</div>;
+
     return (
       <div>
-        <Title>{counter}번째 고양이</Title>
+        <Title>{title}</Title>
         <Form updateMainCat={updateMainCat}/>
-        <MainCard img={mainCat} onHeartClick={onHeartClick}/>
+        <MainCard img={mainCat} onHeartClick={onHeartClick} alreadyFavorite={alreadyFavorite}/>
         <Favorites favorites={favorites}/>
       </div>
     );
