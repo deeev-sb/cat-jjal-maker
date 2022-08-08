@@ -131,13 +131,19 @@
   }
 
   const App = () => {
-    const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
-    const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
-    const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
-
     const [counter, setCounter] = React.useState(jsonLocalStorage.getItem('counter') || 0); // localStorage 는 String 값을 반환함
-    const [mainCat, setMainCat] = React.useState(CAT1);
+    const [mainCat, setMainCat] = React.useState();
     const [favorites, setFavorites] = React.useState(jsonLocalStorage.getItem('favorites') || []); // 좋아요 목록, null 값이면 빈 배열 반환
+
+    // 브라우저 접속 시 표시될 이미지
+    async function setInitialCat() {
+      const newCat = await fetchCat('First cat');
+      setMainCat(newCat);
+    }
+
+    React.useEffect(() => {
+      setInitialCat();
+    }, []);
 
     // async&await 문법
     async function updateMainCat(value) {
