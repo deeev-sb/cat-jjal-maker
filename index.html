@@ -137,9 +137,9 @@
   }
 
   const App = () => {
-    const [counter, setCounter] = React.useState(jsonLocalStorage.getItem('counter') || 0); // localStorage 는 String 값을 반환함
+    const [counter, setCounter] = React.useState(() => {return jsonLocalStorage.getItem('counter')}); // localStorage 는 String 값을 반환함
     const [mainCat, setMainCat] = React.useState();
-    const [favorites, setFavorites] = React.useState(jsonLocalStorage.getItem('favorites') || []); // 좋아요 목록, null 값이면 빈 배열 반환
+    const [favorites, setFavorites] = React.useState(() => {return jsonLocalStorage.getItem('favorites') || []}); // 좋아요 목록, null 값이면 빈 배열 반환
 
     // 좋아요 목록에 포함되어 있는지 반환됨
     const alreadyFavorite = favorites.includes(mainCat);
@@ -158,9 +158,11 @@
     async function updateMainCat(value) {
       const newCat = await fetchCat(value);
       setMainCat(newCat);
-      const nextCounter = counter + 1;
-      setCounter(nextCounter);
-      jsonLocalStorage.setItem('counter', nextCounter);
+      setCounter((prev) => {
+        const nextCounter = prev + 1;
+        jsonLocalStorage.setItem('counter', nextCounter);
+        return nextCounter;
+      });
     }
 
     function onHeartClick() {
